@@ -44,10 +44,23 @@ function App() {
 
   return (
     <div ref={containerRef} style={{ position: 'relative' }}>
-      <ReactLenis root />
-      <div className="app-container" style={{ width: '100%', height: '200vh', zIndex: 0 }}>
+      <ReactLenis 
+        root
+        options={{
+          duration: 1.5, // Slower scroll animation (default is 1.2)
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Smooth easing
+          smoothWheel: true, // Enable smooth wheel scrolling
+          wheelMultiplier: 0.5, // Reduce wheel scroll speed (default is 1)
+          touchMultiplier: 0.5, // Reduce touch scroll speed
+          smoothTouch: true, // Enable smooth touch scrolling
+        }}
+      />
+
+<div>
+      <div className="app-container " style={{ width: '100%', height: '200vh', zIndex: 0 }}>
         <Scene scrollProgress={scrollProgress} />
       </div>
+</div>
       <div className='relative z-50 pointer-events-auto'>
         <Frontend scrollProgress={scrollProgress} />
       </div>

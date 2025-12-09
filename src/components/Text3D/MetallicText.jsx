@@ -3,9 +3,24 @@ import { useLoader } from '@react-three/fiber'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader'
 import { RepeatWrapping } from 'three'
 import { DissolveMaterial } from '../DissolveMaterial/DissolveMaterial'
+import { useState, useEffect } from 'react'
 // import { useControls } from 'leva'
 
 function MetallicText({ scrollProgress = 0 }) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const textSize = isMobile ? 0.3 : 1
 
 //  const dissolveColor = useControls({
 //   dissolveColor: { value: '#111212' },
@@ -34,15 +49,15 @@ function MetallicText({ scrollProgress = 0 }) {
   roughnessMap.repeat.set(scale, scale)
 
   return (
-    <Center>
+    <Center key={textSize}>
       <Text3D
         position={[0, 0, 0]}
-        size={1.5}
+        size={textSize}
         height={0.3}
         curveSegments={32}
         bevelEnabled
-        bevelThickness={0.05}
-        bevelSize={0.04}
+        bevelThickness={0.02}
+        bevelSize={0.0}
         bevelOffset={0}
         bevelSegments={10}
         font="./HardanVintage.json"

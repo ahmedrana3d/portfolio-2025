@@ -27,7 +27,7 @@ export const Timeline = ({
 
   return (
     <div
-      className="w-full bg-black font-sans md:px-10"
+      className="w-full font-sans md:px-10"
       ref={containerRef}>
       <div className="max-w-7xl mx-auto pt-0 pb-12 md:pb-16 px-4 md:px-8 lg:px-10">
         <AnimatedText className="mb-12 md:mb-16 lg:mb-20">

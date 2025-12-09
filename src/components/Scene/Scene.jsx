@@ -88,7 +88,7 @@ function Scene({ scrollProgress = 0 }) {
   return (
     <Canvas 
     className="canvas-background"
-    camera={{ position: [0, 0, 5], fov: 75 }}
+    camera={{ position: [0, 0, 20], fov: 50 }}
     gl={{
       powerPreference: "high-performance",
       alpha: false,

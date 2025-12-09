@@ -44,10 +44,10 @@ const Chapter3 = memo(() => {
   return (
     <div 
       ref={containerRef} 
-      className="w-full bg-black flex flex-col items-center justify-center px-6 sm:px-8 md:px-12 py-24 md:py-32 lg:py-40 transform-gpu will-change-contents"
+      className="w-full  flex flex-col items-center justify-center px-6 sm:px-8 md:px-12 py-24 md:py-32 lg:py-40 transform-gpu will-change-contents"
       style={{ contain: 'layout style paint' }}
     >
-      <AnimatedText className="mb-12 md:mb-16 lg:mb-20">
+      <AnimatedText className="mb-12 md:mb-16 lg:mb-20 font-sf-pro-display">
         <Title>
           About Me
         </Title>

@@ -16,7 +16,7 @@ const Chapter1 = memo(({ scrollProgress = 0 }) => {
         }
         
         rafId = requestAnimationFrame(() => {
-          const newValue = 100 - (value * 104);
+          const newValue = 100 - (value * 170);
           setMaskValue(newValue);
           rafId = null;
         });
@@ -31,17 +31,8 @@ const Chapter1 = memo(({ scrollProgress = 0 }) => {
 
 
     return (
-        <div className="fixed inset-0 w-full h-screen pointer-events-none">
-            {/* Sound control - Top Left */}
-            <div className="absolute top-8 left-8 flex items-center gap-2 pointer-events-auto">
-                <div className="flex gap-0.5">
-                    <span className="w-0.5 h-3 bg-white"></span>
-                    <span className="w-0.5 h-4 bg-white"></span>
-                    <span className="w-0.5 h-2 bg-white"></span>
-                    <span className="w-0.5 h-4 bg-white"></span>
-                </div>
-                <span className="text-white text-sm font-light">Sound on</span>
-            </div>
+        <div className="fixed inset-0 w-full h-screen pointer-events-none z-50">
+           
 
             {/* Center Headline */}
             <div className="absolute bottom-2/7 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -50,7 +41,7 @@ const Chapter1 = memo(({ scrollProgress = 0 }) => {
                 WebkitMaskImage: `linear-gradient(38deg, black ${maskValue}%, black ${maskValue + 10}%, transparent ${maskValue + 30}%)`
               }}
             >
-                <h1 className="text-white  text-center w-4xl text-[1.2vw] leading-[135%] tracking-[-.04em] font-normal">
+                <h1 className="text-white  text-center w-4xl text-2xl md:text-[1.2vw] leading-[135%] tracking-[-.04em] font-normal">
                     Building for people, not just users.
                 </h1>
             </div>

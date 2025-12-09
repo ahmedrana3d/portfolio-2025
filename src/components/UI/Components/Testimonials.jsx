@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import { Marquee } from '../Components/marquee';
+import { AnimatedText, Title } from '../AnimatedComponents';
 
 export function Highlight({
   children,
@@ -120,7 +121,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative w-full bg-black py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section className="relative w-full  py-24 md:py-32 lg:py-40 overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-20 -left-20 z-10 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl animate-pulse" />
       <div className="absolute -right-20 bottom-20 z-10 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -134,15 +135,11 @@ export default function Testimonials() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-12 md:mb-16 lg:mb-20"
         >
-          <motion.h2 
-            className="text-white mb-6 md:mb-8 text-center text-4xl leading-tight font-bold tracking-tight md:text-5xl lg:text-6xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            What Clients Are Saying
-          </motion.h2>
+    <AnimatedText className="mb-12 md:mb-16 lg:mb-20 font-sf-pro-display">
+        <Title>
+          What Clients Are Saying
+        </Title>
+      </AnimatedText>
           <motion.h3 
             className="text-white/70 mx-auto mb-12 md:mb-16 max-w-2xl text-center text-lg font-medium tracking-tight text-balance md:text-xl"
             initial={{ opacity: 0, y: 20 }}
@@ -192,8 +189,8 @@ export default function Testimonials() {
               ))}
           </div>
           {/* Gradient overlays for fade effect */}
-          <div className="from-black pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-40% to-transparent"></div>
-          <div className="from-black pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-40% to-transparent"></div>
+          {/* <div className="from-black pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-40% to-transparent"></div>
+          <div className="from-black pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-40% to-transparent"></div> */}
         </div>
       </div>
     </section>

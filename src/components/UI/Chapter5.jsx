@@ -9,7 +9,7 @@ const Chapter5 = memo(() => {
     <>
 
 <div 
-  className="bg-black w-full flex items-center justify-center flex-col py-24 md:py-32 lg:py-40 px-6 sm:px-8 md:px-12 transform-gpu will-change-contents"
+  className=" w-full flex items-center justify-center flex-col py-24 md:py-32 lg:py-40 px-6 sm:px-8 md:px-12 transform-gpu will-change-contents"
   style={{ contain: 'layout style paint' }}
 >
   <AnimatedText className="mb-12 md:mb-16 lg:mb-20">

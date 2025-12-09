@@ -1,6 +1,9 @@
 module.exports = {
     theme: {
       extend: {
+        fontFamily: {
+          'sf-pro-display': ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        },
         animation: {
           marquee: "marquee var(--duration) linear infinite", 
           "marquee-vertical": "marquee-vertical var(--duration) linear infinite", 

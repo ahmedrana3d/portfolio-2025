@@ -201,7 +201,7 @@ const Chapter4 = memo(() => {
   ];
   return (
     <div 
-      className="relative w-full overflow-clip bg-black transform-gpu will-change-contents"
+      className="relative w-full overflow-clip  transform-gpu will-change-contents"
       style={{ contain: 'layout style paint' }}
     >
       <Timeline data={data} />

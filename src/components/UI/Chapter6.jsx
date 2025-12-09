@@ -1,5 +1,5 @@
-import React, { useState, memo } from 'react';
-import { Mail, Phone, Send, Calendar, Sparkles } from 'lucide-react';
+import React, { useState, memo, useEffect } from 'react';
+import { Mail, Phone, Send, Calendar, Sparkles, X } from 'lucide-react';
 import { AnimatedText, Title } from './AnimatedComponents';
 
 const Chapter6 = memo(() => {
@@ -12,18 +12,94 @@ const Chapter6 = memo(() => {
   
   const [isHovered, setIsHovered] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' or 'error'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    alert('Message sent successfully!');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!formData.name || !formData.email || !formData.message) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 3000);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: 'f8da8b8e-8532-4436-8801-d288df445290',
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          message: formData.message,
+          subject: `Contact Form Submission from ${formData.name}`
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus('success');
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          message: ''
+        });
+        // Clear status after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus(null), 5000);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'unset';
+  };
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isModalOpen]);
 
   return (
     <div 
-      className="min-h-screen bg-black flex flex-col items-center justify-center py-24 md:py-32 lg:py-40 px-6 sm:px-8 md:px-12 relative overflow-hidden transform-gpu will-change-contents"
+      className="min-h-screen flex flex-col items-center justify-center py-24 md:py-32 lg:py-40 px-6 sm:px-8 md:px-12 relative overflow-hidden transform-gpu will-change-contents"
       style={{ contain: 'layout style paint' }}
     >
       <AnimatedText className="mb-12 md:mb-16 lg:mb-20">
@@ -80,14 +156,14 @@ const Chapter6 = memo(() => {
             <button
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onClick={() => alert('Opening calendar booking...')}
+              onClick={openModal}
               className="group cursor-pointer relative px-8 py-5 rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500 w-full sm:w-auto"
             >
               {/* Glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
               
               {/* Button content */}
-              <div className="relative flex items-center  justify-center gap-3 text-white font-semibold text-lg">
+              <div className="relative flex items-center cursor-pointer  justify-center gap-3 text-white font-semibold text-lg">
                 <Calendar className={`w-6 h-6 transition-all duration-500 ${isHovered ? 'rotate-12 scale-110' : ''}`} />
                 <span>Book a Call</span>
                 <Sparkles className={`w-5 h-5 transition-all duration-500 ${isHovered ? 'rotate-180 scale-125' : ''}`} />
@@ -106,7 +182,7 @@ const Chapter6 = memo(() => {
             {/* Ambient glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-gray-500/20 to-gray-500/20 rounded-full blur-3xl -z-10"></div>
             
-            <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Full Name */}
               <div className="group">
                 <label className="block text-slate-300 text-sm font-medium mb-2 group-focus-within:text-blue-400 transition-colors duration-300">
@@ -176,21 +252,77 @@ const Chapter6 = memo(() => {
                 <div className={`h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 transform origin-left transition-transform duration-300 ${focusedField === 'message' ? 'scale-x-100' : 'scale-x-0'}`}></div>
               </div>
 
+              {/* Status Message */}
+              {submitStatus === 'success' && (
+                <div className="p-4 rounded-xl bg-green-500/20 border border-green-500/50 text-green-400 text-sm animate-fade-in">
+                  ✓ Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="p-4 rounded-xl bg-red-500/20 border border-red-500/50 text-red-400 text-sm animate-fade-in">
+                  ✗ Failed to send message. Please try again or contact us directly.
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
-                onClick={handleSubmit}
-                className="group relative w-full bg-linear-to-r from-black via-black to-neutral-900 hover:from-slate-700 hover:to-slate-600 text-white font-semibold py-4 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 border border-slate-600/50 hover:border-blue-500/50"
+                type="submit"
+                disabled={isSubmitting}
+                className={`group relative w-full bg-linear-to-r from-black via-black to-neutral-900 hover:from-slate-700 hover:to-slate-600 text-white font-semibold py-4 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 border border-slate-600/50 hover:border-blue-500/50 ${
+                  isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 <div className="relative flex items-center justify-center gap-2">
-                  <span>Submit</span>
-                  <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                  {isSubmitting ? (
+                    <>
+                      <span>Sending...</span>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </>
+                  ) : (
+                    <>
+                      <span>Submit</span>
+                      <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                    </>
+                  )}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/20 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                {!isSubmitting && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/20 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                )}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
+
+      {/* Cal.com Booking Modal */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+          onClick={closeModal}
+        >
+          <div
+            className="relative w-full max-w-4xl h-[90vh] [box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] [border:1px_solid_rgba(255,255,255,.1)] rounded-3xl overflow-hidden bg-slate-900 animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 text-white transition-all duration-300 hover:scale-110 border border-slate-700/50 hover:border-slate-600"
+              aria-label="Close modal"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Cal.com Embed */}
+            <iframe
+              src="https://cal.com/ahmed-farooq/15min?overlayCalendar=true"
+              className="w-full h-full border-0 rounded-3xl"
+              title="Book a call with Ahmed Farooq"
+              allow="camera; microphone; geolocation"
+            />
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes fade-in {

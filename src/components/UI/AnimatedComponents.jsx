@@ -1,37 +1,44 @@
 import { useEffect, useState, useRef, memo } from 'react';
 import { useScrollTriggerManager } from '../../hooks/useScrollTriggerManager';
-import { gsap } from 'gsap';
 
 // Animated Text Component with mask animation
 export const AnimatedText = memo(({ children, className = '' }) => {
   const [maskValue, setMaskValue] = useState(-64.6102);
   const elementRef = useRef(null);
   const { createTrigger } = useScrollTriggerManager();
-  const hasAnimatedRef = useRef(false);
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    if (!elementRef.current || hasAnimatedRef.current) return;
+    if (!elementRef.current) return;
 
     const trigger = createTrigger({
       trigger: elementRef.current,
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
-        hasAnimatedRef.current = true;
-        // Animate mask from initial value to fully visible
-        const obj = { value: -64.6102 };
-        gsap.to(obj, {
-          value: 100,
-          duration: 3,
-          ease: 'power2.out',
-          onUpdate: () => {
-            setMaskValue(obj.value);
-          },
+      start: 'top 90%',
+      end: 'top 40%',
+      scrub: true,
+      // markers: true,
+      onUpdate: (self) => {
+        // Cancel any pending animation frame
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+        }
+        
+        // Use requestAnimationFrame for smooth updates
+        rafRef.current = requestAnimationFrame(() => {
+          // Map scroll progress (0 to 1) to mask value (-64.6102 to 100)
+          const startValue = -64.6102;
+          const endValue = 100;
+          const newMaskValue = startValue + (self.progress * (endValue - startValue));
+          setMaskValue(newMaskValue);
+          rafRef.current = null;
         });
       },
     });
 
     return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
       trigger.kill();
     };
   }, [createTrigger]);
@@ -59,7 +66,7 @@ export const Title = memo(({ children, className = '', variant = 'default' }) =>
   return (
     <div className={`relative ${className}`}>
       <h2 
-        className={`font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[120%] tracking-[-0.04em] font-semibold text-center ${
+        className={`font-sf-pro-display text-4xl md:text-[6vw] leading-[120%] tracking-[-0.04em] font-semibold text-center ${
           isRed 
             ? 'text-red-300' 
             : 'bg-gradient-to-br from-white via-gray-100 to-gray-300 bg-clip-text text-transparent'
