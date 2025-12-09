@@ -4,13 +4,28 @@ import { useEffect, useRef, useState } from 'react'
 import ReactLenis from 'lenis/react'
 import Frontend from './components/UI/Frontend'
 import { useScrollTriggerManager } from './hooks/useScrollTriggerManager'
+import LoadingScreen from './components/Loading/LoadingScreen'
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [threeProgress, setThreeProgress] = useState(0)
+  const [threeActive, setThreeActive] = useState(true)
   const containerRef = useRef(null)
   const { createTrigger } = useScrollTriggerManager()
   const rafRef = useRef(null)
   const lastProgressRef = useRef(0)
+
+  // Handle Three.js progress updates
+  const handleProgressUpdate = (progressData) => {
+    setThreeProgress(progressData.progress)
+    setThreeActive(progressData.active)
+  }
+
+  // Handle loading complete
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
 
   useEffect(() => {
     const trigger = createTrigger({
@@ -44,6 +59,15 @@ function App() {
 
   return (
     <div ref={containerRef} style={{ position: 'relative' }}>
+      {/* Loading Screen */}
+      {isLoading && (
+        <LoadingScreen
+          onLoaded={handleLoadingComplete}
+          threeProgress={threeProgress}
+          threeActive={threeActive}
+        />
+      )}
+
       <ReactLenis 
         root
         options={{
@@ -56,11 +80,11 @@ function App() {
         }}
       />
 
-<div>
-      <div className="app-container " style={{ width: '100%', height: '200vh', zIndex: 0 }}>
-        <Scene scrollProgress={scrollProgress} />
+      <div>
+        <div className="app-container " style={{ width: '100%', height: '200vh', zIndex: 0 }}>
+          <Scene scrollProgress={scrollProgress} onProgressUpdate={handleProgressUpdate} />
+        </div>
       </div>
-</div>
       <div className='relative z-50 pointer-events-auto'>
         <Frontend scrollProgress={scrollProgress} />
       </div>

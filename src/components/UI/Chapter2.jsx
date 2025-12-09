@@ -14,14 +14,14 @@ const Chapter2 = memo(() => {
         {/* Animated Paragraph */}
         <AnimatedText>
           <p className="text-white text-xl font-sf-pro-display md:text-2xl lg:text-3xl leading-[145%] tracking-[-0.02em] font-light">
-            The web used to feel exciting — but today, digital experiences are scattered across clunky interfaces, boring templates, broken interactions, and endless tabs. There's no way to explore, engage, or feel anything meaningful without getting lost in the noise. Not anymore. I take ideas, motion, and design, and turn them into interactive, intuitive, and immersive spaces where people actually enjoy being.
+            Remember when the web felt like an adventure? These days, most sites feel like they're built from the same template—clunky, predictable, and honestly, kind of boring. I build the kind of experiences that make you want to stick around. Where every interaction feels intentional, where motion has meaning, and where design actually serves the people using it. That's the stuff I care about.
           </p>
         </AnimatedText>
 
         {/* Animated Title with glowing bar */}
         <AnimatedText>
           <Title variant="red">
-            That's what I do, that's why I'm here.
+            Simple as that.
           </Title>
         </AnimatedText>
       </div>

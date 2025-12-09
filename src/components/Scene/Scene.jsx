@@ -7,7 +7,9 @@ import { BlendFunction } from 'postprocessing'
 import { ACESFilmicToneMapping, LinearToneMapping, Vector2 } from 'three'
 import GradientBackground from '../GrainyBackground/GrainyBackground'
 import { useState, useEffect, useRef } from 'react'
-import { Perf } from 'r3f-perf'
+import { Suspense } from 'react'
+import ProgressTracker from '../Loading/ProgressTracker'
+// import { Perf } from 'r3f-perf'
 
 // Component to handle mouse-based camera movement
 function CameraController({ mousePosition }) {
@@ -32,7 +34,7 @@ function CameraController({ mousePosition }) {
   return null
 }
 
-function Scene({ scrollProgress = 0 }) {
+function Scene({ scrollProgress = 0, onProgressUpdate }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const [config, setConfig] = useState({
@@ -114,44 +116,43 @@ function Scene({ scrollProgress = 0 }) {
       contain: 'strict'
     }}
     >
+      <Suspense fallback={null}>
+        <ProgressTracker onProgressUpdate={onProgressUpdate} />
 
+        {/* <Perf/> */}
 
-<Perf/>
+        <GradientBackground {...config} />
 
-<GradientBackground {...config} />
+        <CameraController mousePosition={mousePosition} />
+        {/* <OrbitControls enableRotate={false} /> */}
+        
+        <Lighting />
+        <MetallicText scrollProgress={scrollProgress} />
+        <Sparkles count={100} scale={5 * 2} size={1} speed={0.4} />
 
-      <CameraController mousePosition={mousePosition} />
-      {/* <OrbitControls enableRotate={false} /> */}
-      
-      <Lighting />
-      <MetallicText scrollProgress={scrollProgress} />
-      <Sparkles count={100} scale={5 * 2} size={1} speed={0.4} />
+        {/* <color attach="background" args={["#050505"]} /> */}
+        {/* <fog color="#161616" attach="fog" near={8} far={30} /> */}
 
-      {/* <color attach="background" args={["#050505"]} /> */}
-      {/* <fog color="#161616" attach="fog" near={8} far={30} /> */}
+        <EffectComposer multisampling={0} disableNormalPass>
+          <DepthOfField
+            focusDistance={2.5}
+            focalLength={0.3}
+            bokehScale={0.3}
+            height={240}
+          />
 
-      <EffectComposer multisampling={0} disableNormalPass>
-  <DepthOfField
-    focusDistance={2.5}
-    focalLength={0.3}
-    bokehScale={0.3}
-    height={240}
-  />
+          <Bloom
+            intensity={1} // Intensity of the bloom effect
+          />
 
-<Bloom
-  intensity={1} // Intensity of the bloom effect
-
-/>
-
-  {/* Adds RGB color split like your screenshot */}
-  <ChromaticAberration
-    offset={new Vector2(0.009, 0.009)} // increase for stronger RGB split
-    radialModulation={true}
-    modulationOffset={0.5}
-  />
-
-</EffectComposer>
-
+          {/* Adds RGB color split like your screenshot */}
+          <ChromaticAberration
+            offset={new Vector2(0.009, 0.009)} // increase for stronger RGB split
+            radialModulation={true}
+            modulationOffset={0.5}
+          />
+        </EffectComposer>
+      </Suspense>
     </Canvas> 
   )
 }

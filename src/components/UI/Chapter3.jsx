@@ -65,19 +65,19 @@ const Chapter3 = memo(() => {
         <div className="space-y-6 md:space-y-8">
           <AnimatedText>
             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-              With over <span className="text-white font-semibold">3+ years</span> of experience building web and mobile applications, I specialize in creating robust, user-focused software solutions that solve real business problems.
+              I've been building things for the web and mobile for <span className="text-white font-semibold">3+ years</span> now. What keeps me going is solving actual problems—not just making things look pretty, but making them work better for the people who use them every day.
             </p>
           </AnimatedText>
 
           <AnimatedText>
             <p className="text-gray-400 text-base md:text-lg leading-relaxed">
-              I started my journey learning web and 3D development, exploring technologies like Three.js, React Three Fiber, A-Frame, and GLSL. Over the years, I've worked on interactive 3D experiences, AR/VR projects, and web applications that combine creativity with functionality.
+              My path started with web development, then I got curious about 3D. I spent a lot of time tinkering with Three.js, React Three Fiber, and diving into shaders with GLSL. That curiosity led me to work on some wild projects—interactive 3D experiences, AR experiments, and web apps where the creative side actually matters.
             </p>
           </AnimatedText>
 
           <AnimatedText>
             <p className="text-gray-400 text-base md:text-lg leading-relaxed">
-              I'm passionate about clean code, learning new technologies, and exploring ideas through philosophy and thoughtful reading. In my free time, I enjoy reflecting and experimenting with new concepts.
+              When I'm not coding, you'll probably find me reading philosophy or just thinking about ideas. I like taking time to reflect on things, and I'm always playing around with new concepts—both in code and in life.
             </p>
           </AnimatedText>
         </div>
