@@ -132,7 +132,7 @@ const LoadingScreen = ({ onLoaded, threeProgress = 0, threeActive = true }) => {
             Loading...
           </h2>
           <p className="text-white/60 text-sm md:text-base">
-            Preparing your experience
+          Good things take time
           </p>
         </div>
 

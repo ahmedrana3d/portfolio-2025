@@ -32,7 +32,7 @@ export function TestimonialCard({
       className={cn(
         'mb-4 flex w-full cursor-pointer flex-col items-start justify-between gap-6 rounded-xl p-6',
         // dark theme styles
-        'bg-white/5 border border-white/10 backdrop-blur-sm',
+        '[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] [border:1px_solid_rgba(255,255,255,.1)]',
         // hover effect
         'transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/20',
         className,
@@ -189,8 +189,8 @@ export default function Testimonials() {
               ))}
           </div>
           {/* Gradient overlays for fade effect */}
-          {/* <div className="from-black pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-40% to-transparent"></div>
-          <div className="from-black pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-40% to-transparent"></div> */}
+          <div className="from-black pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-10% to-transparent"></div>
+          <div className="from-black pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-10% to-transparent"></div>
         </div>
       </div>
     </section>
